@@ -1,0 +1,10 @@
+Package: r_utils
+Title: Utils for R
+Version: 0.0.0.9000
+Authors@R: person("Domingo", "Lopez", email = "neuroimaginador@gmail.com", role = c("aut", "cre"))
+Description: Several of the utils I have developed over the years for R.
+Depends: R (>= 3.2.1)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Suggests: testthat
