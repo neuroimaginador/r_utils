@@ -1,11 +1,11 @@
-# Install miniCRAN package, and load it, if not already loaded
-options(repos = c(CRAN = "http://cran.us.r-project.org/"))
+# # Install miniCRAN package, and load it, if not already loaded
+# options(repos = c(CRAN = "http://cran.us.r-project.org/"))
 
-if (!require(miniCRAN)) {
+# if (!require(miniCRAN)) {
   
-  install.packages("miniCRAN", type = "source")
-  require(miniCRAN)
-}
+#   install.packages("miniCRAN", type = "source")
+#   require(miniCRAN)
+# }
 
 # Function to extract Dependencies from NEUTILUS DESCRIPTION file.
 pkgDescriptionDependencies <- function(file) {
@@ -64,71 +64,71 @@ pkgDescriptionDependencies <- function(file) {
   
 }
 
-# These are the packages to be installed
-pkgs <- pkgDescriptionDependencies("../../neutilus/DESCRIPTION")
+# # These are the packages to be installed
+# pkgs <- pkgDescriptionDependencies("../../neutilus/DESCRIPTION")
 
-# Create Repository
-localCRAN <- "~/local-CRAN-repo"
-if ( (!file.exists(localCRAN)) | (length(list.files(localCRAN)) == 0) ) {
+# # Create Repository
+# localCRAN <- "~/local-CRAN-repo"
+# if ( (!file.exists(localCRAN)) | (length(list.files(localCRAN)) == 0) ) {
   
-  # Creation of the repository
-  dir.create(localCRAN)
-  alreadyInstalled <- c()
+#   # Creation of the repository
+#   dir.create(localCRAN)
+#   alreadyInstalled <- c()
   
-} else {
+# } else {
   
 
-  # The repository already exists... Which packages are already installed?
-  alreadyInstalled <- available.packages(contriburl = paste0("file://", 
-                                                             contrib.url(repos = normalizePath(localCRAN), 
-                                                                         getOption("pkgType"))))[, "Package"]
+#   # The repository already exists... Which packages are already installed?
+#   alreadyInstalled <- available.packages(contriburl = paste0("file://", 
+#                                                              contrib.url(repos = normalizePath(localCRAN), 
+#                                                                          getOption("pkgType"))))[, "Package"]
   
-  options(repos = c(CRAN = "http://cran.us.r-project.org/"))
+#   options(repos = c(CRAN = "http://cran.us.r-project.org/"))
   
-}
+# }
 
-# Remove from the list to be installed those already in the repository
-pkgs <- pkgs[!(pkgs$Package %in% alreadyInstalled), ]
+# # Remove from the list to be installed those already in the repository
+# pkgs <- pkgs[!(pkgs$Package %in% alreadyInstalled), ]
 
-if (nrow(pkgs) > 0) {
+# if (nrow(pkgs) > 0) {
   
-  # There are packages to be installed
-  cat("Packages to be downloaded to the Repository:\n")
-  print(pkgs)
+#   # There are packages to be installed
+#   cat("Packages to be downloaded to the Repository:\n")
+#   print(pkgs)
   
-  # First, old version of packages
-  oldIdx <- which(!is.na(pkgs$Version))
-  oldDeps <- c()
+#   # First, old version of packages
+#   oldIdx <- which(!is.na(pkgs$Version))
+#   oldDeps <- c()
   
-  if (length(oldIdx) > 0) {
+#   if (length(oldIdx) > 0) {
     
-    oldVersions <- pkgs$Package[oldIdx]
-    versions <- pkgs$Version[oldIdx]
-    versions <- gsub(pattern = "[<=|<|=|>|>=]", replacement = "", x = versions)
+#     oldVersions <- pkgs$Package[oldIdx]
+#     versions <- pkgs$Version[oldIdx]
+#     versions <- gsub(pattern = "[<=|<|=|>|>=]", replacement = "", x = versions)
     
-    addOldPackage(pkgs = oldVersions, path = localCRAN, vers = versions)
-    deps <- setdiff(pkgDep(oldVersions), c(oldVersions, alreadyInstalled))
+#     addOldPackage(pkgs = oldVersions, path = localCRAN, vers = versions)
+#     deps <- setdiff(pkgDep(oldVersions), c(oldVersions, alreadyInstalled))
     
-    cat("Dependencies to be downloaded (first step):\n")
-    cat(sort(deps), sep = ", ")
+#     cat("Dependencies to be downloaded (first step):\n")
+#     cat(sort(deps), sep = ", ")
     
-    makeRepo(deps, path = localCRAN, type = "source", quiet = TRUE)
-    #makeRepo(deps, path = localCRAN, type = "mac.binary", quiet = TRUE)
+#     makeRepo(deps, path = localCRAN, type = "source", quiet = TRUE)
+#     #makeRepo(deps, path = localCRAN, type = "mac.binary", quiet = TRUE)
     
-    # These are the packages downloaded in this step
-    oldDeps <- c(oldVersions, deps)
-  }
+#     # These are the packages downloaded in this step
+#     oldDeps <- c(oldVersions, deps)
+#   }
   
-  # Current versions of packages (only not already installed dependencies)
-  currentVersions <- pkgs$Package[is.na(pkgs$Version)]
+#   # Current versions of packages (only not already installed dependencies)
+#   currentVersions <- pkgs$Package[is.na(pkgs$Version)]
   
-  newDeps <- setdiff(pkgDep(currentVersions), c(oldDeps, alreadyInstalled))
+#   newDeps <- setdiff(pkgDep(currentVersions), c(oldDeps, alreadyInstalled))
   
-  cat("Dependencies to be downloaded (second step):\n")
-  cat(sort(setdiff(newDeps, currentVersions)), sep = ", ")
+#   cat("Dependencies to be downloaded (second step):\n")
+#   cat(sort(setdiff(newDeps, currentVersions)), sep = ", ")
   
-  makeRepo(newDeps, path = localCRAN, type = "source", quiet = TRUE)
-  #makeRepo(newDeps, path = localCRAN, type = "mac.binary", quiet = TRUE)
+#   makeRepo(newDeps, path = localCRAN, type = "source", quiet = TRUE)
+#   #makeRepo(newDeps, path = localCRAN, type = "mac.binary", quiet = TRUE)
   
-}
+# }
 

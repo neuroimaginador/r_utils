@@ -55,24 +55,24 @@ pkgDescriptionDependencies <- function(file) {
   
 }
 
-# These are the packages to be installed
-pkgs <- pkgDescriptionDependencies("../../neutilus/DESCRIPTION")
+# # These are the packages to be installed
+# pkgs <- pkgDescriptionDependencies("../../neutilus/DESCRIPTION")
 
-# Local Repository
-localCRAN <- normalizePath("~/local-CRAN-repo")
-repos <- getOption("repos")
-options(repos = localCRAN)
+# # Local Repository
+# localCRAN <- normalizePath("~/local-CRAN-repo")
+# repos <- getOption("repos")
+# options(repos = localCRAN)
 
-# Installed packages
-installed <- installed.packages()
+# # Installed packages
+# installed <- installed.packages()
 
-# Packages to be installed
-cat("Installing packages:\n")
-toInstall <- setdiff(pkgs$Package, installed)
-cat(sort(toInstall), sep = ", ")
+# # Packages to be installed
+# cat("Installing packages:\n")
+# toInstall <- setdiff(pkgs$Package, installed)
+# cat(sort(toInstall), sep = ", ")
 
-# Actual installation
-contriburl <- paste0("file://", 
-                     contrib.url(repos = normalizePath(localCRAN), 
-                                 type = "source"))
-install.packages(toInstall, contriburl = contriburl, type = "source")
+# # Actual installation
+# contriburl <- paste0("file://", 
+#                      contrib.url(repos = normalizePath(localCRAN), 
+#                                  type = "source"))
+# install.packages(toInstall, contriburl = contriburl, type = "source")
