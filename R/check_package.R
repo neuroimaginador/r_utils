@@ -10,7 +10,7 @@ check_package <- function(path = ".",
 
     safe_require("covr")
 
-    cov <- get_coverage(path = path, type = type[1], exclude_pattern = "#!exclude")
+    cov <- get_coverage(path = path, type = type[1])
 
     return(cov)
 
