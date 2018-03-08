@@ -17,7 +17,7 @@ add_test_infrastructure <- function(pkg = ".") {
   dir.create(file.path(pkg$path, "tests", "testthat"), showWarnings = FALSE,
              recursive = TRUE)
 
-  writeLines(whisker::whisker.render(template = testthat_template, data = list(name = pkgname)),
+  writeLines(whisker::whisker.render(template = testthat_template, data = list(name = pkg$name)),
              file.path(pkg$path, "tests", "testthat.R"))
 
   devtools:::add_desc_package(pkg, "Suggests", "testthat")
